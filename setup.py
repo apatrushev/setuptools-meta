@@ -83,6 +83,10 @@ long_description = '\n'.join((
 
 setup(
     name='setuptools-meta',
+    use_scm_version=True,
+    setup_requires=[
+        'setuptools_scm',
+    ],
     version=__import__('setuptools_meta').__version__,
     description=__import__('setuptools_meta').__description__,
     long_description=long_description,
