@@ -107,6 +107,11 @@ setup(
         ],
     },
     license='AGPL',
+    extras_require={
+        'dev': [
+            'spherical-dev[dev]>=0.2.2,<0.3',
+        ],
+    },
     zip_safe=False,
     keywords='setuptools metadata',
     classifiers=[
