@@ -1,8 +1,8 @@
 import json
-import sys
-
 from distutils.errors import DistutilsSetupError
+
 from setuptools import Command
+
 
 __version__ = '1.0.0'
 __description__ = 'Easily store custom metadata with setuptools'

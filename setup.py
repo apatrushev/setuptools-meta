@@ -5,6 +5,7 @@ import re
 
 from setuptools import setup
 
+
 RE_REQUIREMENT = re.compile(r'^\s*-r\s*(?P<filename>.*)$')
 RE_MD_CODE_BLOCK = re.compile(r'```(?P<language>\w+)?\n(?P<lines>.*?)```', re.S)
 RE_SELF_LINK = re.compile(r'\[(.*?)\]\[\]')
@@ -37,15 +38,15 @@ def md2pypi(filename):
     for match in RE_MD_CODE_BLOCK.finditer(content):
         rst_block = '\n'.join(
             ['.. code-block:: {language}'.format(**match.groupdict()), ''] +
-            ['    {0}'.format(l) for l in match.group('lines').split('\n')] +
-            ['']
+            ['    {0}'.format(line) for line in match.group('lines').split('\n')] +
+            [''],
         )
         content = content.replace(match.group(0), rst_block)
 
     refs = dict(RE_LINK_REF.findall(content))
-    content = RE_LINK_REF.sub('.. _\g<key>: \g<url>', content)
-    content = RE_SELF_LINK.sub('`\g<1>`_', content)
-    content = RE_LINK_TO_URL.sub('`\g<text> <\g<url>>`_', content)
+    content = RE_LINK_REF.sub(r'.. _\g<key>: \g<url>', content)
+    content = RE_SELF_LINK.sub(r'`\g<1>`_', content)
+    content = RE_LINK_TO_URL.sub(r'`\g<text> <\g<url>>`_', content)
 
     for match in RE_BADGE.finditer(content):
         if match.group('badge') not in BADGES_TO_KEEP:
@@ -60,7 +61,7 @@ def md2pypi(filename):
     for match in RE_LINK_TO_REF.finditer(content):
         content = content.replace(match.group(0), '`{text} <{url}>`_'.format(
             text=match.group('text'),
-            url=refs[match.group('ref')]
+            url=refs[match.group('ref')],
         ))
 
     for match in RE_TITLE.finditer(content):
@@ -77,7 +78,7 @@ def md2pypi(filename):
 long_description = '\n'.join((
     md2pypi('README.md'),
     md2pypi('CHANGELOG.md'),
-    ''
+    '',
 ))
 
 

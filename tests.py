@@ -1,12 +1,10 @@
 import json
-import pytest
 import subprocess
 import sys
-
+from distutils.errors import DistutilsSetupError
 from textwrap import dedent
 
-from distutils.errors import DistutilsSetupError
-
+import pytest
 from setuptools import Distribution
 
 from setuptools_meta import setup_keyword
@@ -48,7 +46,7 @@ class Workspace(object):
 
 @pytest.fixture
 def workspace(request, tmpdir):
-    marker = request.node.get_marker('meta')
+    marker = request.node.get_closest_marker('meta')
     meta = marker.args[0] if marker else {}
     wksp = Workspace(tmpdir, meta)
     wksp.chdir()
